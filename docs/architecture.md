@@ -1,5 +1,7 @@
 # Implemented architecture — read-only milestone
 
+The proposed AI creation/editing system is documented separately in [AI Effekseer architecture](ai-effekseer-architecture.md). That document specifies future Editor/Material host adapters and does not change the implemented resource subsystem described here.
+
 Desktop update 2026-10-08: `MainWindow` now hosts `BatchMappingView` directly with `BatchMappingViewModel`. The duplicated texture-only and advanced tabs and their old `MainViewModel` were removed. Read-only file/folder audits, filters, boundary controls and missing-resource lookup are in `BatchMappingViewModel.Inspection.cs` and the collapsed inspection section of the same screen. Mapping supplies its final audit to that section. `TextureMappingService` remains for CLI compatibility; the desktop uses `ResourceMappingService` for all mapping operations.
 
 Update: the texture-mapping milestone adds `TextureMappingService`, preview models, a restricted `TextureReferenceWriter` and EDIT encoder. It creates mapped copies with staged resource copies and rollback; general parser capabilities and complete portability remain restricted. See `texture-mapping.md`. The sections below describe the original inspector foundation.

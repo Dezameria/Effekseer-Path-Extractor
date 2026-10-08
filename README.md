@@ -75,6 +75,10 @@ Publish produces single-file app and CLI executables under `release` by default.
 
 Next: official editor/API verification, broader resource formats, nested repair and complete portability validation. See [development plan](docs/development-plan.md) and [texture mapping](docs/texture-mapping.md).
 
+## AI effect creation architecture
+
+The planned AI/Editor Bridge architecture covers selected-node editing, effect generation, recipes, materials, assets, previews, Undo/Redo, version profiles and provider integration. See [AI Effekseer architecture draft](docs/ai-effekseer-architecture.md). This is a design document; the Editor Bridge and AI integration are not implemented yet.
+
 ## License
 
 This project uses the [MIT license text from Effekseer](https://github.com/effekseer/Effekseer/blob/master/LICENSE). The original `Copyright (c) 2011 Effekseer Project` notice is preserved unchanged in [LICENSE](LICENSE) and [docs/licenses/Effekseer-MIT.txt](docs/licenses/Effekseer-MIT.txt). Published builds include both license files.
