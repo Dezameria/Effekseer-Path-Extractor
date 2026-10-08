@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="ResourceManager.App.BatchMappingView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <ScrollViewer x:Name="BatchScroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,10,10,0">
+      <StackPanel>
+        <Border Style="{StaticResource Card}">
+          <StackPanel>
+            <TextBlock Text="1  เลือกไฟล์หรือทั้งโฟลเดอร์" Style="{StaticResource Heading}" />
+            <DockPanel IsEnabled="{Binding IsIdle}">
+              <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="10,0,0,0">
+                <Button Content="เลือกไฟล์…" Command="{Binding OpenEffectCommand}" Margin="0,0,8,0" />
+                <Button Content="เลือกโฟลเดอร์…" Command="{Binding OpenFolderCommand}" />
+              </StackPanel>
+              <TextBox Text="{Binding InputPath, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
+            <DockPanel Margin="0,8,0,0">
+              <Button DockPanel.Dock="Right" Content="ตรวจสอบอย่างเดียว" Command="{Binding InspectCommand}" Padding="12,7" Margin="12,0,0,0" />
+              <TextBlock Text="Map ไฟล์ .efkefc ได้ทั้งโฟลเดอร์ • Material / Model / GLB เลือกตรวจสอบอย่างเดียวได้" TextWrapping="Wrap" Foreground="#66758C" FontSize="12" VerticalAlignment="Center" />
+            </DockPanel>
+          </StackPanel>
+        </Border>
+        <Border Style="{StaticResource Card}">
+          <StackPanel IsEnabled="{Binding IsIdle}">
+            <TextBlock Text="2  เลือกคลัง Asset — ค้นทุกชนิดในโฟลเดอร์ย่อย" Style="{StaticResource Heading}" />
+            <DockPanel>
+              <Button DockPanel.Dock="Right" Content="เลือกคลัง…" Command="{Binding AssetFolderCommand}" Margin="10,0,0,0" />
+              <TextBox Text="{Binding AssetRoot, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
+            <Grid Margin="0,10,0,0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="180" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+              </Grid.ColumnDefinitions>
+              <ComboBox ItemsSource="{Binding Libraries}" SelectedItem="{Binding SelectedLibrary}" DisplayMemberPath="Display" Padding="8" ToolTip="เลือกคลังที่บันทึกไว้จากครั้งก่อน" />
+              <TextBox Grid.Column="1" Text="{Binding AssetName, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,0,0" ToolTip="ชื่อเรียกคลัง เช่น Shineforge หรือ Texture รวม" />
+              <Button Grid.Column="2" Content="บันทึกคลัง" Command="{Binding SaveLibraryCommand}" Margin="10,0,0,0" />
+              <Button Grid.Column="3" Content="เอาออกจากรายการ" Command="{Binding RemoveLibraryCommand}" Margin="8,0,0,0" />
+            </Grid>
+            <TextBlock Text="ตั้งชื่อเรียกแล้วบันทึกคลังไว้เลือกครั้งหน้า • การเอาออกจากรายการไม่ลบไฟล์ Asset" TextWrapping="Wrap" Foreground="#66758C" FontSize="12" Margin="0,8,0,0" />
+          </StackPanel>
+        </Border>
+        <Border Style="{StaticResource Card}">
+          <StackPanel>
+            <TextBlock Text="3  เลือกวิธีบันทึก" Style="{StaticResource Heading}" />
+            <TextBlock Text="อ่าน path ของ Texture, Material, Model / GLB, Sound และ Curve จาก Effect เสมอ" TextWrapping="Wrap" Foreground="#66758C" FontSize="12" Margin="0,0,0,12" />
+            <Grid IsEnabled="{Binding IsIdle}">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="14" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              <RadioButton GroupName="WriteMode" IsChecked="{Binding CreateFolders}" Style="{StaticResource Mode}">
+                <StackPanel>
+                  <TextBlock Text="สร้างชุดใหม่" FontWeight="SemiBold" />
+                  <TextBlock Text="คัดลอก Effect และ Asset ไปโฟลเดอร์แยก พร้อมแก้ path ในสำเนา Material" Foreground="#66758C" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0" />
+                </StackPanel>
+              </RadioButton>
+              <RadioButton Grid.Column="2" GroupName="WriteMode" IsChecked="{Binding ReplaceOriginal}" Style="{StaticResource Mode}">
+                <StackPanel>
+                  <TextBlock Text="ใช้ไฟล์ที่มีอยู่" FontWeight="SemiBold" />
+                  <TextBlock Text="แก้ path ใน Effect เดิมให้เรียก Asset จากคลังโดยตรง ไม่คัดลอก Asset พร้อมสำรอง Effect เป็น .bak" Foreground="#66758C" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0" />
+                </StackPanel>
+              </RadioButton>
+            </Grid>
+            <DockPanel Margin="0,10,0,0" IsEnabled="{Binding OutputEnabled}">
+              <Button DockPanel.Dock="Right" Content="เลือกปลายทาง…" Command="{Binding OutputFolderCommand}" Margin="10,0,0,0" />
+              <TextBlock DockPanel.Dock="Left" Text="โฟลเดอร์ผลลัพธ์" Width="130" VerticalAlignment="Center" />
+              <TextBox Text="{Binding OutputRoot, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
+            <Grid Margin="0,10,0,0" IsEnabled="{Binding IsIdle}">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              <TextBlock Text="โฟลเดอร์ Texture" VerticalAlignment="Center" />
+              <TextBox Grid.Column="1" Text="{Binding TextureFolder, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding CopyTextures}" />
+              <CheckBox Grid.Column="2" Content="อนุญาตเปลี่ยนชื่อ Texture ในชุดใหม่" IsChecked="{Binding AllowRename}" IsEnabled="{Binding CopyTextures}" VerticalAlignment="Center" Margin="18,0,0,0" />
+            </Grid>
+          </StackPanel>
+        </Border>
+        <Border Style="{StaticResource Card}">
+          <StackPanel>
+            <DockPanel>
+              <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <Button Content="ค้นหา Effect และ Asset" Command="{Binding FindCommand}" Margin="0,0,8,0" />
+                <Button Content="ตรวจตัวอย่างทั้งหมดที่เลือก" Command="{Binding PreviewCommand}" Background="#2464D6" Foreground="White" />
+              </StackPanel>
+              <TextBlock Text="4  เลือกไฟล์และแก้กรณีชื่อซ้ำ" Style="{StaticResource Heading}" />
+            </DockPanel>
+            <DockPanel Margin="0,4,0,10">
+              <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <Button Content="เลือกทั้งหมด" Command="{Binding SelectAllCommand}" Padding="10,5" Margin="0,0,8,0" />
+                <Button Content="ไม่เลือกทั้งหมด" Command="{Binding SelectNoneCommand}" Padding="10,5" />
+              </StackPanel>
+              <TextBlock Text="{Binding Counts}" Foreground="#526A90" VerticalAlignment="Center" />
+            </DockPanel>
+            <DataGrid ItemsSource="{Binding Effects}" SelectedItem="{Binding SelectedEffect}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsEnabled="{Binding IsIdle}" MinHeight="100" MaxHeight="250" RowHeight="36" HeadersVisibility="Column" RowHeaderWidth="0" GridLinesVisibility="None" AlternatingRowBackground="#F7F9FC">
+              <DataGrid.Columns>
+                <DataGridCheckBoxColumn Header="ทำ" Binding="{Binding Included, UpdateSourceTrigger=PropertyChanged}" Width="45" />
+                <DataGridTextColumn Header="Effect" Binding="{Binding Name}" IsReadOnly="True" Width="1.3*" />
+                <DataGridTextColumn Header="เวอร์ชัน" Binding="{Binding EditorVersion}" IsReadOnly="True" Width="85" />
+                <DataGridTextColumn Header="สถานะ / กรณีที่ต้องแก้" Binding="{Binding Status}" IsReadOnly="True" Width="1.4*" />
+                <DataGridTextColumn Header="path ผลลัพธ์" Binding="{Binding OutputPath}" IsReadOnly="True" Width="2*" />
+              </DataGrid.Columns>
+            </DataGrid>
+            <TextBlock Text="เลือก Effect เพื่อดู Asset และ Texture ของ Material • ชื่อซ้ำต้องเลือกตาม path • รายการเฉพาะ Editor ที่หายจะแจ้งเตือน • เปลี่ยนชื่อได้เฉพาะ Texture" TextWrapping="Wrap" Foreground="#66758C" FontSize="12" Margin="0,10,0,8" />
+            <TextBlock Text="{Binding SelectedEffect.Name}" FontWeight="SemiBold" Margin="0,0,0,8" />
+            <DataGrid ItemsSource="{Binding CurrentTextures}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsEnabled="{Binding IsIdle}" MinHeight="90" MaxHeight="220" RowHeight="42" HeadersVisibility="Column" RowHeaderWidth="0" GridLinesVisibility="None" AlternatingRowBackground="#F7F9FC">
+              <DataGrid.Columns>
+                <DataGridTextColumn Header="ชนิด" Binding="{Binding ResourceKind}" Width="75" IsReadOnly="True" />
+                <DataGridTemplateColumn Header="Asset / เจ้าของ" Width="1.2*">
+                  <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                      <StackPanel ToolTip="{Binding OriginalReference}" VerticalAlignment="Center"><TextBlock Text="{Binding FileName}" /><TextBlock Text="{Binding OwnerName}" FontSize="10" Foreground="#66758C" /></StackPanel>
+                    </DataTemplate>
+                  </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="กรณี" Width="135">
+                  <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding MatchStatus}" VerticalAlignment="Center">
+                        <TextBlock.Style>
+                          <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                              <DataTrigger Binding="{Binding MatchStatus}" Value="ชื่อซ้ำ · เลือกไฟล์">
+                                <Setter Property="Foreground" Value="#A05B00" />
+                                <Setter Property="FontWeight" Value="SemiBold" />
+                              </DataTrigger>
+                              <DataTrigger Binding="{Binding MatchStatus}" Value="ไม่พบไฟล์">
+                                <Setter Property="Foreground" Value="#B22D2D" />
+                              </DataTrigger>
+                            </Style.Triggers>
+                          </Style>
+                        </TextBlock.Style>
+                      </TextBlock>
+                    </DataTemplate>
+                  </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="เลือกไฟล์จากคลัง — แสดงโฟลเดอร์ที่พบ" Width="2*">
+                  <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                      <ComboBox ItemsSource="{Binding Candidates}" SelectedItem="{Binding SelectedCandidate, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="DisplayPath" ToolTip="{Binding SelectedCandidate.Path}" VerticalAlignment="Center" />
+                    </DataTemplate>
+                  </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="ชื่อเมื่อคัดลอก (optional)" Width="1.2*">
+                  <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                      <TextBox Text="{Binding DestinationName, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" Background="Transparent" Padding="4">
+                        <TextBox.Style><Style TargetType="TextBox"><Setter Property="IsReadOnly" Value="True" /><Style.Triggers><MultiDataTrigger><MultiDataTrigger.Conditions><Condition Binding="{Binding DataContext.KeepNames, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="False" /><Condition Binding="{Binding IsTexture}" Value="True" /></MultiDataTrigger.Conditions><Setter Property="IsReadOnly" Value="False" /></MultiDataTrigger></Style.Triggers></Style></TextBox.Style>
+                      </TextBox>
+                    </DataTemplate>
+                  </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+              </DataGrid.Columns>
+            </DataGrid>
+          </StackPanel>
+        </Border>
+        <Border Style="{StaticResource Card}" Background="#EDF4FF">
+          <StackPanel>
+            <DockPanel>
+              <Button DockPanel.Dock="Right" Content="เปิดตำแหน่งผลลัพธ์ของแถวที่เลือก" Command="{Binding OpenResultCommand}" />
+              <TextBlock Text="5  ตรวจ path และบันทึก" Style="{StaticResource Heading}" />
+            </DockPanel>
+            <TextBox Text="{Binding Preview, Mode=OneWay}" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" MinHeight="90" MaxHeight="300" Background="Transparent" BorderThickness="0" Margin="0,8,0,0" />
+            <TextBlock Text="งานแต่ละ Effect บันทึกแยกกัน • หลังเสร็จให้เปิดตรวจภาพใน Effekseer" Foreground="#66758C" FontSize="12" Margin="0,8,0,0" />
+          </StackPanel>
+        </Border>
+        <Border Style="{StaticResource Card}">
+          <Expander x:Name="InspectionExpander" Header="รายละเอียดผลตรวจ" IsExpanded="{Binding InspectionExpanded}">
+            <StackPanel Margin="0,12,0,0">
+              <TextBlock Text="ตรวจไฟล์อย่างเดียวได้โดยไม่ต้องเลือกคลัง Asset • กรองชื่อหรือสถานะ แล้วเลือกแถวเพื่อดู path ที่อ้างถึง" TextWrapping="Wrap" Foreground="#66758C" FontSize="12" />
+              <DockPanel Margin="0,10,0,0" IsEnabled="{Binding IsIdle}">
+                <Button DockPanel.Dock="Right" Content="เลือกขอบเขต…" Command="{Binding InspectionBoundaryCommand}" Margin="10,0,0,0" />
+                <TextBlock DockPanel.Dock="Left" Text="ขอบเขตผลตรวจ" Width="130" VerticalAlignment="Center" />
+                <TextBox Text="{Binding InspectionBoundary, UpdateSourceTrigger=PropertyChanged}" />
+              </DockPanel>
+              <WrapPanel Margin="0,10,0,0">
+                <Button Content="ตรวจสอบอย่างเดียว" Command="{Binding InspectCommand}" Margin="0,0,8,0" />
+                <Button Content="ค้นไฟล์ที่ขาดในคลัง" Command="{Binding FindInspectionMissingCommand}" />
+              </WrapPanel>
+              <TextBlock Text="{Binding InspectionSummary}" TextWrapping="Wrap" FontWeight="SemiBold" Margin="0,12,0,4" />
+              <TextBlock Text="{Binding InspectionPortability}" TextWrapping="Wrap" Foreground="#66758C" FontSize="12" />
+              <DockPanel Margin="0,10,0,8">
+                <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding InspectionStatuses}" SelectedItem="{Binding InspectionStatus}" Width="150" Margin="10,0,0,0" ToolTip="กรองตามสถานะผลตรวจ" />
+                <TextBlock DockPanel.Dock="Left" Text="ชื่อหรือ path" Width="100" VerticalAlignment="Center" />
+                <TextBox Text="{Binding InspectionFilter, UpdateSourceTrigger=PropertyChanged}" ToolTip="ค้นในชื่อไฟล์ path จริง และ path ที่อ้างถึง" />
+              </DockPanel>
+              <DataGrid ItemsSource="{Binding InspectionResources}" SelectedItem="{Binding SelectedInspectionResource}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" Height="180" HeadersVisibility="Column" RowHeaderWidth="0" GridLinesVisibility="None" AlternatingRowBackground="#F7F9FC" RowHeight="34">
+                <DataGrid.Columns>
+                  <DataGridTextColumn Header="Asset" Binding="{Binding Name}" Width="1.4*" />
+                  <DataGridTextColumn Header="ชนิด" Binding="{Binding Type}" Width="90" />
+                  <DataGridTextColumn Header="สถานะ" Binding="{Binding Status}" Width="105" />
+                  <DataGridTextColumn Header="การอ้างถึง" Binding="{Binding Scope}" Width="1.2*" />
+                  <DataGridTextColumn Header="path จริง" Binding="{Binding ResolvedPath}" Width="2*" />
+                </DataGrid.Columns>
+              </DataGrid>
+              <TextBox Text="{Binding InspectionDetails, Mode=OneWay}" IsReadOnly="True" TextWrapping="Wrap" MinHeight="90" MaxHeight="180" VerticalScrollBarVisibility="Auto" Margin="0,10,0,0" FontSize="12" />
+            </StackPanel>
+          </Expander>
+        </Border>
+      </StackPanel>
+    </ScrollViewer>
+    <Border Grid.Row="1" Background="White" Padding="14,10">
+      <DockPanel>
+        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+          <Button Content="ยกเลิก" Command="{Binding CancelCommand}" Visibility="{Binding IsBusy, Converter={StaticResource BoolVisibility}}" Margin="0,0,8,0" />
+          <Button Content="{Binding ApplyLabel}" Command="{Binding ApplyCommand}" Background="#2464D6" Foreground="White" FontWeight="SemiBold" />
+        </StackPanel>
+        <StackPanel Margin="0,0,12,0">
+          <ProgressBar IsIndeterminate="{Binding IsBusy}" Visibility="{Binding IsBusy, Converter={StaticResource BoolVisibility}}" Height="3" Margin="0,0,0,4" />
+          <TextBlock Text="{Binding Message}" FontSize="12" TextWrapping="Wrap" />
+        </StackPanel>
+      </DockPanel>
+    </Border>
+  </Grid>
+</UserControl>

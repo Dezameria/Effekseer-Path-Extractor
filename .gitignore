@@ -1,0 +1,10 @@
+**/bin/
+**/obj/
+.tools/
+.research/
+artifacts/
+release/
+.vs/
+*.user
+# User-supplied commercial samples are local fixtures, not distributable source.
+/effekseer/

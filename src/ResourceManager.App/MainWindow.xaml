@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="ResourceManager.App.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:ResourceManager.App" Title="Effekseer Resource Manager" Width="1180" Height="940" MinWidth="960" MinHeight="720" Background="#F4F6FA" Foreground="#213047" FontFamily="Segoe UI" FontSize="13" AllowDrop="True" Drop="OnDrop" DragOver="OnDragOver">
+  <Grid Background="#F4F6FA">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Border Background="#17243A" Padding="26,16">
+      <StackPanel>
+        <TextBlock Text="EFFEKSEER RESOURCE MANAGER" Foreground="#9DB8E3" FontSize="11" FontWeight="SemiBold" />
+        <TextBlock Text="จัดการ Asset ให้ Effect" Foreground="White" FontSize="25" FontWeight="SemiBold" Margin="0,4,0,0" />
+        <TextBlock Text="เลือกไฟล์หรือทั้งโฟลเดอร์ → เลือกคลัง Asset → ตรวจรายการ → ใช้ไฟล์เดิมหรือสร้างชุดใหม่" Foreground="#C9D6E9" TextWrapping="Wrap" Margin="0,5,0,0" />
+      </StackPanel>
+    </Border>
+    <local:BatchMappingView x:Name="BatchView" Grid.Row="1" Margin="22,8,22,0" />
+  </Grid>
+</Window>
