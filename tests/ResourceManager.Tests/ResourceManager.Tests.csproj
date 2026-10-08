@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
+    <Compile Include="../../src/EffekseerAI.Host/EditorXmlComparer.cs" Link="EditorXmlComparer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,9 +2,30 @@
 
 Windows dependency inspector with effect resource mapping, saved asset libraries and folder batches. Batch discovery always includes Texture, Material, Model/GLB, Sound and Curve paths, plus nested material textures. Existing-file mode updates the effect with a backup and links every asset directly without asset copies or new asset folders. New-package mode copies assets and rewrites texture references in material copies. Full rendering/portability certification remains under development. See [resource mapping and Mega](docs/full-resource-repair.md), [batch and in-place usage](docs/batch-mapping.md) and [legacy single-copy texture mapping](docs/texture-mapping.md).
 
-## Run the desktop inspector
+## เริ่มจาก clone: ต้องติดตั้งอะไร
 
-Double-click `เปิดโปรแกรม.cmd` in the project root or open `release/app/ResourceManager.App.exe`. The Windows x64 app bundles its runtime and dependencies in one EXE; no separate .NET installation is needed. Copy the whole `release` folder when sharing so that the license accompanies the app. See [folder guide](docs/folder-guide.md). The Thai desktop has one screen for choosing files/folders, an asset library, existing-file or new-package mode, matching and saving. See [desktop mapping steps](docs/batch-mapping.md). Previous builds and generated validation artifacts are under `artifacts`.
+**Clone แล้วต้อง build ก่อนใช้งานครั้งแรก** เพราะ Git ไม่ได้เก็บ EXE, SDK หรือ DLL ของ Effekseer ไว้ ต้องมี Windows x64, Git, PowerShell 7 และ **.NET 10 SDK** ติดตั้งด้วย:
+
+```powershell
+winget install --id Git.Git --exact --source winget
+winget install --id Microsoft.PowerShell --exact --source winget
+winget install --id Microsoft.DotNet.SDK.10 --exact --source winget
+```
+
+ปิด Terminal เดิม เปิด PowerShell 7 แล้วรัน:
+
+```powershell
+git clone https://github.com/Dezameria/Effekseer-Path-Extractor.git
+cd Effekseer-Path-Extractor
+pwsh -NoProfile -File .\scripts\build.ps1 -Publish
+& '.\เปิดโปรแกรม.cmd'
+```
+
+ถ้า clone ไว้แล้ว ให้เริ่มจากบรรทัด build ต้องมีอินเทอร์เน็ตในการดาวน์โหลด NuGet/runtime ครั้งแรก ส่วนสแกน/Map Asset ไม่ต้องติดตั้ง Effekseer; ส่วนสร้าง/แก้ Node ต้องดาวน์โหลด Editor 1.80.7 หรือ 1.70e และ build host เพิ่ม ดู [คู่มือติดตั้งครบพร้อมลิงก์ดาวน์โหลดและวิธีแก้ปัญหา](docs/installation.md)
+
+## Run the desktop inspector (after publishing)
+
+After `scripts/build.ps1 -Publish` succeeds, double-click `เปิดโปรแกรม.cmd` in the project root or open `release/app/ResourceManager.App.exe`. The published Windows x64 asset app bundles its runtime and dependencies in one EXE; no separate .NET installation is needed on the machine running that EXE. Share `release/app`, `release/inspector` and the root license files together. Optional `release/editor-host` has separate runtime requirements; see [installation](docs/installation.md). The Thai desktop has one screen for choosing files/folders, an asset library, existing-file or new-package mode, matching and saving. See [desktop mapping steps](docs/batch-mapping.md). Previous builds and generated validation artifacts are under `artifacts`.
 
 The former Texture-only and advanced-inspection tabs have been removed. Single effects and folder batches use the same mapping workflow, saved libraries, duplicate cases and output paths. Texture renaming is optional and applies only to new packages. The legacy texture-only service remains available through the CLI `map` command.
 
@@ -49,7 +70,7 @@ These layout numbers are not the same as editor release names. Texture mapping r
 
 ## Build and test
 
-Requires Windows and a .NET 10 SDK. A workspace-local SDK was installed in `.tools/dotnet`; no global SDK was upgraded.
+Requires Windows x64 and a .NET 10 SDK. Install prerequisites using [the installation guide](docs/installation.md). A developer may use a local SDK in `.tools/dotnet`, but that folder is not included in Git.
 
 This repository contains source code. The bundled SDK, generated executables and local asset samples are excluded from Git. After cloning, install a .NET 10 SDK and run `scripts/build.ps1 -Publish` to create the executables before using `เปิดโปรแกรม.cmd`.
 
@@ -67,7 +88,7 @@ Publish produces single-file app and CLI executables under `release` by default.
 ## Known limitations and next work
 
 - Texture mapping supports sibling copies, in-place replacement with unique backups, and per-effect folders. Cancellation/error rollback is per effect; a batch retains earlier successful effects. No general manual replacement, full Undo/history or crash recovery yet.
-- No official editor/API load/save test completed; full portability certification is disabled.
+- Resource mapping still has no full official-editor rendering/portability certification. The separate Node host has official Core save/reload checks; these do not certify arbitrary resource remapping.
 - EDIT candidates use an explicit extension heuristic and can contain inactive settings. INFO unknown resource types remain visible as Unknown.
 - Symlink/junction targets are not certified; linked resources become UNRESOLVED and linked directory traversal is skipped with diagnostics.
 - No full-drive automatic scan or automatic content-hash duplicate selection. Named asset libraries and the output root are persisted.
@@ -77,7 +98,7 @@ Next: official editor/API verification, broader resource formats, nested repair 
 
 ## AI effect creation architecture
 
-The planned AI/Editor Bridge architecture covers selected-node editing, effect generation, recipes, materials, assets, previews, Undo/Redo, version profiles and provider integration. See [AI Effekseer architecture draft](docs/ai-effekseer-architecture.md). This is a design document; the Editor Bridge and AI integration are not implemented yet.
+An initial isolated file host now targets **Effekseer 1.80.7 and 1.70e**: create/read nodes, edit Fixed color/scale, group Undo/Redo and save through the official exporter with reload verification. See [setup and usage](docs/editor-host.md). Live Editor selection, Preview and AI integration remain future work; see the [full architecture](docs/ai-effekseer-architecture.md).
 
 ## License
 

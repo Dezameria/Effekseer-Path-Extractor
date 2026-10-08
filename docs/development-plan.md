@@ -1,6 +1,6 @@
 # วิเคราะห์ระบบและแผนพัฒนา Effekseer Resource & Path Manager
 
-ร่างสำหรับระบบ AI สร้างและแก้ Effect เพิ่มเติมอยู่ใน [AI Effekseer architecture](ai-effekseer-architecture.md) ครอบคลุม Editor Bridge, Node operations, recipes, Material/Asset adapters และลำดับ proof of concept โดยยังไม่ได้เริ่ม implementation ของ Bridge
+ร่างสำหรับระบบ AI สร้างและแก้ Effect เพิ่มเติมอยู่ใน [AI Effekseer architecture](ai-effekseer-architecture.md) เริ่ม implementation ของ isolated file host สำหรับ 1.80.7/1.70e แล้ว ดู [วิธีใช้และผลทดสอบ](editor-host.md) ส่วน live Editor Bridge, Preview และ AI ยังเป็นขั้นถัดไป
 
 วันที่จัดทำ: 5 ตุลาคม 2026
 

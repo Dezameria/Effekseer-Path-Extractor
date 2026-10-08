@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework Condition="'$(EffekseerVersion)' != '1.70e'">net10.0</TargetFramework>
+    <TargetFramework Condition="'$(EffekseerVersion)' == '1.70e'">net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <PlatformTarget>x64</PlatformTarget>
+    <AssemblyName>EffekseerAI.Host</AssemblyName>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <Target Name="RequireEditor" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(EffekseerDirectory)/EffekseerCore.dll')" Text="Use scripts/build-editor-host.ps1 with the matching installed Effekseer directory." />
+    <Error Condition="'$(EffekseerVersion)' != '1.70e' and '$(EffekseerVersion)' != '1.80.7'" Text="Supported build profiles: 1.70e, 1.80.7." />
+  </Target>
+  <ItemGroup>
+    <AssemblyMetadata Include="EffekseerProfile" Value="$(EffekseerVersion)" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <None Include="$(EffekseerDirectory)/Viewer.dll" Link="Viewer.dll" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="EffekseerCore"><HintPath>$(EffekseerDirectory)/EffekseerCore.dll</HintPath><Private>true</Private></Reference>
+    <Reference Include="EffekseerCoreGUI"><HintPath>$(EffekseerDirectory)/EffekseerCoreGUI.dll</HintPath><Private>true</Private></Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+</Project>
