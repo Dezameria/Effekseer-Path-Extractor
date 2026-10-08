@@ -15,6 +15,7 @@ try {
         & $sdk publish 'src\ResourceManager.Inspector\ResourceManager.Inspector.csproj' -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -p:DebugType=embedded -o (Join-Path $ArtifactRoot 'inspector') --nologo
         if ($LASTEXITCODE -ne 0) { throw 'Inspector publish failed.' }
         Copy-Item -LiteralPath 'docs\licenses\Effekseer-MIT.txt' -Destination (Join-Path $ArtifactRoot 'Effekseer-MIT.txt')
+        Copy-Item -LiteralPath 'LICENSE' -Destination (Join-Path $ArtifactRoot 'LICENSE.txt')
     }
 }
 finally { Pop-Location }

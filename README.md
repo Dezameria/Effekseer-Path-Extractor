@@ -74,3 +74,7 @@ Publish produces single-file app and CLI executables under `release` by default.
 - Safety limits: document size 64 MiB, EDIT expansion 32 MiB, 4096 chunks, bounded counts/depth. Large inputs above these limits report an error.
 
 Next: official editor/API verification, broader resource formats, nested repair and complete portability validation. See [development plan](docs/development-plan.md) and [texture mapping](docs/texture-mapping.md).
+
+## License
+
+Project source code is licensed under the [MIT License](LICENSE), copyright (c) 2026 Dezameria. The upstream Effekseer notice is preserved separately in [docs/licenses/Effekseer-MIT.txt](docs/licenses/Effekseer-MIT.txt). Published builds include both license files.
