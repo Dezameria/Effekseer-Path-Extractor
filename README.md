@@ -77,4 +77,4 @@ Next: official editor/API verification, broader resource formats, nested repair 
 
 ## License
 
-Project source code is licensed under the [MIT License](LICENSE), copyright (c) 2026 Dezameria. The upstream Effekseer notice is preserved separately in [docs/licenses/Effekseer-MIT.txt](docs/licenses/Effekseer-MIT.txt). Published builds include both license files.
+This project uses the [MIT license text from Effekseer](https://github.com/effekseer/Effekseer/blob/master/LICENSE). The original `Copyright (c) 2011 Effekseer Project` notice is preserved unchanged in [LICENSE](LICENSE) and [docs/licenses/Effekseer-MIT.txt](docs/licenses/Effekseer-MIT.txt). Published builds include both license files.
